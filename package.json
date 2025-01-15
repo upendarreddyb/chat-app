@@ -4,9 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "build":"npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "npm install --legacy-peer-deeps && npm install --legacy-peer-deeps --prefix frontend && npm run build --prefix frontend"
   },
-
   "author": "upendar reddy",
   "license": "ISC",
   "description": "",
