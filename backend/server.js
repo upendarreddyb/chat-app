@@ -12,9 +12,9 @@ const path = require("path");
 const app = express();
 connectDB();
 app.use(express.json());
-const allowedOrigins = ["http://localhost:3000", "https://chat-app-2-gtpc.onrender.com"];
+const allowedOrigins = ["http://localhost:3000", "https://chat-app-p145.onrender.com"];
 
-app.use("/api/user", userRoutes);
+https: app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
