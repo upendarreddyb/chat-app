@@ -14,10 +14,10 @@ const accessChat = asyncHandler(async (req, res) => {
     $and: [{ users: { $elemMatch: { $eq: req.user._id } } }, { users: { $elemMatch: { $eq: userId } } }],
   })
     .populate("users", "-password")
-    .populate("latestMassage");
+    .populate("latestMessage");
 
   isChat = await User.populate(isChat, {
-    path: "latestMassage.sender",
+    path: "latestMessage.sender",
     select: "name pic email",
   });
 
@@ -42,7 +42,7 @@ const accessChat = asyncHandler(async (req, res) => {
 
 const fetchChat = asyncHandler(async (req, res) => {
   try {
-
+    console.log("chat ....");
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
       .populate("groupAdmin", "-password")
@@ -53,12 +53,12 @@ const fetchChat = asyncHandler(async (req, res) => {
           path: "latestMessage.sender",
           select: "name pic email",
         });
-      
+        //  console.log("results", results);
         res.status(200).send(results);
       });
   } catch (error) {
     res.status(400);
-    throw new Error(error.message); 
+    throw new Error(error.message);
   }
 });
 const createGroupChat = asyncHandler(async (req, res) => {

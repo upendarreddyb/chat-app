@@ -17,16 +17,14 @@ const MyChats = ({ fetchAgain }) => {
   const toast = useToast();
 
   const fetchChats = async () => {
-    // console.log(user._id);
+    console.log("fetchchats for",user._id);
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
-
       const { data } = await axios.get("/api/chat", config);
-      console.log("chats data", data[3].users);
       setChats(data);
     } catch (error) {
       toast({

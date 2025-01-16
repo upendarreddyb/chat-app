@@ -15,8 +15,8 @@ import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 
-//const ENDPOINT = "https://chat-app-ldre.onrender.com/";  -> After deployment
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://chat-app-ldre.onrender.com/";  //> After deployment
+//const ENDPOINT = "http://localhost:5000";
 
 var socket, selectedChatCompare;
 
