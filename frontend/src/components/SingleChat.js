@@ -1,7 +1,7 @@
 
 import { Box, Text } from "@chakra-ui/react";
 import "./styles.css";
-import { IconButton, Spinner, useToast, FormControl, Input } from "@chakra-ui/react";
+import { IconButton, Spinner, useToast, FormControl, Input,Button } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -14,7 +14,10 @@ import animationData from "../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
-const ENDPOINT = "https://chat-app-ldre.onrender.com/"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+
+//const ENDPOINT = "https://chat-app-ldre.onrender.com/";  -> After deployment
+const ENDPOINT = "http://localhost:5000";
+
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -49,6 +52,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setLoading(true);
 
       const { data } = await axios.get(`/api/message/${selectedChat._id}`, config);
+      console.log("all messeges ",data)
       setMessages(data);
       setLoading(false);
 
@@ -66,7 +70,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+     console.log("Clicked element:", event.target);
+    if ((event.key === "Enter" && newMessage) || (event.button === 0 && newMessage)) {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -167,7 +172,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             justifyContent={{ base: "space-between" }}
             alignItems="center"
           >
-            <IconButton display={{ base: "flex", md: "none" }} icon={<ArrowBackIcon />} onClick={() => setSelectedChat("")} />
+            <IconButton
+              display={{ base: "flex", md: "none" }}
+              icon={<ArrowBackIcon />}
+              onClick={() => setSelectedChat("")}
+            />
             {messages &&
               (!selectedChat.isGroupChat ? (
                 <>
@@ -217,13 +226,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+              <div style={{ display: "flex" }}>
+                <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                />
+                <Button onClick={sendMessage}>➡️</Button>
+              </div>
             </FormControl>
           </Box>
         </>
