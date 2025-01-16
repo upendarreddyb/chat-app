@@ -10,7 +10,6 @@ const { notFound, erroEhandler } = require("./middileware/errorMiddleWare");
 const path = require("path");
 const cors = require("cors");
 const notificationRoutes = require("./routes/notificationRoutes");
-const Notification = require("./models/notificationModel");
 
 const app = express();
 connectDB();
@@ -71,7 +70,7 @@ io.on("connection", (socket) => {
   socket.on("typing", (room) => socket.in(room).emit("typing"));
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
-  /* socket.on("new message", (newMessageRecieved) => {
+   socket.on("new message", (newMessageRecieved) => {
     console.log("new message");
     var chat = newMessageRecieved.chat;
 
@@ -82,30 +81,7 @@ io.on("connection", (socket) => {
 
       socket.in(user._id).emit("message recieved", newMessageRecieved);
     });
-  }); */
-
-  socket.on("new message", async (newMessageRecieved) => {
-    console.log("new message");
-
-    var chat = newMessageRecieved.chat;
-
-    if (!chat.users) return console.log("chat.users not defined");
-
-    // Save notification to the database
-    chat.users.forEach(async (user) => {
-      if (user._id == newMessageRecieved.sender._id) return;
-
-      // Create a new notification
-      const notification = new Notification({
-        user: user._id,
-        message: `New message from ${newMessageRecieved.sender.name}`,
-        chat: chat._id,
-      });
-
-      await notification.save();
-
-      // Emit the notification to the user
-      socket.in(user._id).emit("message recieved", newMessageRecieved);
-    });
   });
+
+ 
 });
