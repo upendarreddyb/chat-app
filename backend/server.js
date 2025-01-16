@@ -9,7 +9,6 @@ const messageRoutes = require("./routes/messageRoutes");
 const { notFound, erroEhandler } = require("./middileware/errorMiddleWare");
 const path = require("path");
 const cors = require("cors");
-const notificationRoutes = require("./routes/notificationRoutes");
 
 const app = express();
 connectDB();
@@ -23,7 +22,6 @@ app.use(
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
-app.use("/api/notification", notificationRoutes);
 
 // Deployement
 const __dirname1 = path.resolve();
